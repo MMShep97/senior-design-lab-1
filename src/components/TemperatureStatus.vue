@@ -117,7 +117,7 @@
                                 size: 18,
                             }
                         },
-                        range: [0, 300]
+                        range: [-300, 0]
                     },
                     yaxis: {
                         title: {
@@ -186,16 +186,19 @@
                 // let xMissingData = this.graphData[2].x;
                 // let yMissingData = this.graphData[2].y;
 
-                //300 seconds has passed, reset
-                if (this.time > 300) {
-                    this.resetGraphData();
-                }
-
                 if (this.sensorIsPlugged == true && this.switchOn == true) {
                     //within bounds
                     if (this.temperature >= 10 && this.temperature <= 50) {
-                        xArray.push(this.time);
-                        yArray.push(this.temperature);
+
+                        if (xArray.length < 301) {
+                            xArray.push( - xArray.length);
+                        }
+
+                        yArray.unshift(this.temperature);
+                        if (yArray.length > 301) {
+                            yArray.pop();
+                        }
+
                     } else {
                         xOutOfBounds.push(this.time);
                         if (this.temperature < 10) {
@@ -205,8 +208,10 @@
                         }
                     }
                 } else {
-                    xArray.push(this.time);
-                    yArray.push("");
+                    yArray.unshift('');
+                        if (yArray.length > 301) {
+                            yArray.pop();
+                        }
                 }
 
                 // else {
