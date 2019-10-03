@@ -20,8 +20,9 @@
                 </div>
             </div>
             <div class="col-sm-12">
-                <button type="button" class="btn btn-dark third-box-button" v-on:click="updateThirdBoxDisplayStatus()">
-                    <span v-if="documents.thirdBoxDisplayStatus">Press to Toggle Third Box Off</span>
+                <button type="button" :disabled="disableButtonToggle" class="btn btn-dark third-box-button" v-on:click="updateThirdBoxDisplayStatus()">
+                    <span v-if="documents.switchOn == false">Wait for Switch To Turn On</span>
+                    <span v-else-if="documents.thirdBoxDisplayStatus">Press to Toggle Third Box Off</span>
                     <span v-else>Press to Toggle Third Box On</span>
                 </button>
             </div>
@@ -78,6 +79,8 @@
                     isValid: false,
                     country: {}
                 },
+
+                disableButtonToggle: false,
 
                 textMessage: "",
                 correctPhoneNumberMessage: "",
@@ -161,6 +164,12 @@
                     this.documents.thirdBoxDisplayStatus = newVal;
                 }
             },
+
+            switchOn: {
+                get: function () {
+                    return this.documents.switchOn
+                }
+            }
         },
 
         methods: {
@@ -275,6 +284,15 @@
                             }
                         }
                     );
+                }
+            },
+
+            switchOn: function () {
+                if (this.switchOn == false) {
+                    this.disableButtonToggle = true;
+                }
+                else {
+                    this.disableButtonToggle = false;
                 }
             }
         },
