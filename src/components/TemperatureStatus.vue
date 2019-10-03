@@ -2,21 +2,16 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 status-style">
-                <div v-if="documents.thirdBoxDisplayStatus">
-                    <div v-if="documents.sensorIsPlugged">
-                        <div class="alert alert-success">
-                            <div>Current Temperature: {{temperature}} &#8451;</div>
-                        </div>
-                    </div>
-                    <div v-else class="alert alert-warning">
-                        Unplugged Sensor
-                    </div>
-                    <div v-if="graphData" class="col-sm-12">
-                        <vue-plotly :data="graphData" :layout="layout" :options="options" class="graph-style" />
+                <div v-if="documents.sensorIsPlugged">
+                    <div class="alert alert-success">
+                        <div>Current Temperature: {{temperature}} &#8451;</div>
                     </div>
                 </div>
-                <div v-else class="alert alert-danger">
-                    No Data Available
+                <div v-else class="alert alert-warning">
+                    Unplugged Sensor
+                </div>
+                <div v-if="graphData" class="col-sm-12">
+                    <vue-plotly :data="graphData" :layout="layout" :options="options" class="graph-style" />
                 </div>
             </div>
             <div class="col-sm-12">
@@ -196,7 +191,7 @@
                     this.resetGraphData();
                 }
 
-                if (this.sensorIsPlugged == true && this.thirdBoxDisplayStatus == true) {
+                if (this.sensorIsPlugged == true && this.switchOn == true) {
                     //within bounds
                     if (this.temperature >= 10 && this.temperature <= 50) {
                         xArray.push(this.time);
