@@ -4,8 +4,17 @@
             <div class="col-sm-12 status-style">
                 <div v-if="documents.sensorIsPlugged">
                     <div class="alert alert-success">
-                        <div>Current Temperature: {{temperature}} &#8451;</div>
+                        <div>
+                            <span>Current Temperature: </span>
+                            <span v-if="inCelsius">{{temperature}} &#8451;</span>
+                            <span v-else>{{convertedTemperature}} &#8457;</span>
+                        </div>
+                        <button type="button" class="btn btn-dark convert-temp-button" v-on:click="convertTemperatureUnits()">
+                            <span v-if="inCelsius">Convert to Fahrenheit</span>
+                            <span v-else>Convert to Celsius</span>
+                        </button>
                     </div>
+
                 </div>
                 <div v-else class="alert alert-warning">
                     Unplugged Sensor
@@ -15,7 +24,8 @@
                 </div>
             </div>
             <div class="col-sm-12">
-                <button type="button" :disabled="disableButtonToggle" class="btn btn-dark third-box-button" v-on:click="updateThirdBoxDisplayStatus()">
+                <button type="button" :disabled="disableButtonToggle" class="btn btn-dark third-box-button"
+                    v-on:click="updateThirdBoxDisplayStatus()">
                     <span v-if="documents.switchOn == false">Wait for Switch To Turn On</span>
                     <span v-else-if="documents.thirdBoxDisplayStatus">Press to Toggle Third Box Off</span>
                     <span v-else>Press to Toggle Third Box On</span>
@@ -76,6 +86,8 @@
                 },
 
                 disableButtonToggle: false,
+                inCelsius: true,
+                convertedTemperature: 0,
 
                 textMessage: "",
                 correctPhoneNumberMessage: "",
@@ -223,6 +235,14 @@
                 this.time = 0;
             },
 
+            convertTemperatureUnits: function () {
+                this.inCelsius = !this.inCelsius;
+
+                if (this.inCelsius == false ) {
+                    this.convertedTemperature = ( ( 9 / 5 ) * (this.temperature) ) + 32
+                }
+            },
+
             onInput({
                 number,
                 isValid,
@@ -243,9 +263,9 @@
         },
 
         created() {
-                this.graphInterval = setInterval(() => {
-                    this.updateGraph();
-                }, 1000);
+            this.graphInterval = setInterval(() => {
+                this.updateGraph();
+            }, 1000);
         },
 
         watch: {
@@ -284,8 +304,7 @@
             switchOn: function () {
                 if (this.switchOn == false) {
                     this.disableButtonToggle = true;
-                }
-                else {
+                } else {
                     this.disableButtonToggle = false;
                 }
             }
@@ -334,5 +353,9 @@
 
     .correct-number-status {
         display: block;
+    }
+
+    .convert-temp-button {
+        display: inline-block;
     }
 </style>
