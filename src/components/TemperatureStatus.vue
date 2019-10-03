@@ -196,7 +196,7 @@
                     this.resetGraphData();
                 }
 
-                if (this.sensorIsPlugged == true) {
+                if (this.sensorIsPlugged == true && this.thirdBoxDisplayStatus == true) {
                     //within bounds
                     if (this.temperature >= 10 && this.temperature <= 50) {
                         xArray.push(this.time);
@@ -248,7 +248,6 @@
         },
 
         created() {
-            if (this.thirdBoxDisplayStatus == true)
                 this.graphInterval = setInterval(() => {
                     this.updateGraph();
                 }, 1000);
@@ -257,15 +256,15 @@
         watch: {
             thirdBoxDisplayStatus: function () {
                 //clear regardless
-                if (this.graphInterval != null) {
-                    clearInterval(this.graphInterval)
-                };
+                // if (this.graphInterval != null) {
+                //     clearInterval(this.graphInterval)
+                // };
 
-                if (this.thirdBoxDisplayStatus == true) {
-                    this.graphInterval = setInterval(() => {
-                        this.updateGraph();
-                    }, 1000);
-                }
+                // if (this.thirdBoxDisplayStatus == true) {
+                //     this.graphInterval = setInterval(() => {
+                //         this.updateGraph();
+                //     }, 1000);
+                // }
             },
 
             temperature: function () {
