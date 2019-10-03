@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-sm-12 status-style">
                 <div v-if="documents.thirdBoxDisplayStatus">
-                    <div v-if="sensorIsPlugged">
+                    <div v-if="documents.sensorIsPlugged">
                         <div class="alert alert-success">
                             <div>Current Temperature: {{temperature}} &#8451;</div>
                         </div>
