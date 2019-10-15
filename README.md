@@ -1,5 +1,7 @@
 # senior-design-lab-1
 
+Navigate into the specified lab directory after cloning, then proceed with the following commands below!
+
 ## Project setup
 ```
 npm install
