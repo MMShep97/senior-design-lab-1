@@ -2,23 +2,28 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 status-style">
-                <div v-if="documents.sensorIsPlugged">
-                    <div class="alert alert-success">
-                        <div>
-                            <span>Current Temperature: </span>
-                            <span v-if="inCelsius">{{temperature}} &#8451;</span>
-                            <span v-else>{{convertedTemperature}} &#8457;</span>
+                <div v-if="documents.switchOn">
+                    <div v-if="documents.sensorIsPlugged">
+                        <div class="alert alert-success">
+                            <div>
+                                <span>Current Temperature: </span>
+                                <span v-if="inCelsius">{{temperature}} &#8451;</span>
+                                <span v-else>{{getTempInFar(temperature)}} &#8457;</span>
+                            </div>
+                            <button type="button" class="btn btn-dark convert-temp-button" v-on:click="convertTemperatureUnits()">
+                                <span v-if="inCelsius">Convert to Fahrenheit</span>
+                                <span v-else>Convert to Celsius</span>
+                            </button>
                         </div>
-                        <button type="button" class="btn btn-dark convert-temp-button" v-on:click="convertTemperatureUnits()">
-                            <span v-if="inCelsius">Convert to Fahrenheit</span>
-                            <span v-else>Convert to Celsius</span>
-                        </button>
                     </div>
-
+                    <div v-else class="alert alert-warning">
+                        Unplugged Sensor
+                    </div>
                 </div>
                 <div v-else class="alert alert-warning">
-                    Unplugged Sensor
+                    System Offline
                 </div>
+                
                 <div v-if="graphData" class="col-sm-12">
                     <vue-plotly :data="graphData" :layout="layout" :options="options" class="graph-style" />
                 </div>
@@ -220,10 +225,15 @@
                         }
                     }
                 } else {
-                    yArray.unshift('');
-                        if (yArray.length > 301) {
-                            yArray.pop();
-                        }
+
+                    if (xArray.length < 301) {
+                        xArray.push( - xArray.length);
+                    }
+                    
+                    yArray.unshift(null);
+                    if (yArray.length > 301) {
+                        yArray.pop();
+                    }
                 }
 
                 // else {
@@ -243,9 +253,13 @@
             convertTemperatureUnits: function () {
                 this.inCelsius = !this.inCelsius;
 
-                if (this.inCelsius == false ) {
-                    this.convertedTemperature = ( ( 9 / 5 ) * (this.temperature) ) + 32
-                }
+            //    if (this.inCelsius == false ) {
+            //        this.convertedTemperature = ( ( 9 / 5 ) * (this.temperature) ) + 32
+            //    }
+            },
+
+            getTempInFar: function(cel) { 
+                return (( ( 9 / 5 ) * (cel) ) + 32).toFixed(3)
             },
 
             onInput({
