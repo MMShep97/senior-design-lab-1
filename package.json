@@ -14,7 +14,7 @@
     "firebase": "^6.6.2",
     "jquery": "^3.4.1",
     "nexmo": "^2.4.2",
-    "plotly.js": "^1.49.5",
+    "plotly.js": "^2.25.2",
     "popper.js": "^1.15.0",
     "vue": "^2.6.10",
     "vue-router": "^3.1.3",
